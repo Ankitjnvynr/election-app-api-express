@@ -12,6 +12,9 @@ const userSchema = Schema(
             lowercase: true,
             index: true
         },
+        google_id: {
+            type: String,
+        },
         email: {
             type: String,
             required: true,
@@ -34,15 +37,19 @@ const userSchema = Schema(
         avatar: {
             type: String,
         },
-        myBookings: [
+        points: [
             {
-                type: Schema.Types.ObjectId,
-                ref: "Booking"
+                type: Number,
+                default: 0,
             }
         ],
         password: {
             type: String,
             required: [true, "Password is required"]
+        },
+        isVerified: {
+            type: Boolean,
+            default: false
         },
         refreshToken: {
             type: String
