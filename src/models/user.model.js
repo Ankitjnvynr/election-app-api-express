@@ -37,12 +37,10 @@ const userSchema = Schema(
         avatar: {
             type: String,
         },
-        points: [
-            {
-                type: Number,
-                default: 0,
-            }
-        ],
+        points: {
+            type: Number,
+            default: 0,
+        },
         password: {
             type: String,
         },
@@ -52,10 +50,40 @@ const userSchema = Schema(
         },
         refreshToken: {
             type: String
+        },
+        phone:{
+            type:String,
+            trim:true
+        },
+        dob:{
+            type:Date,
+        },
+        voterId:{
+            type:String,
+            trim:true
+        },
+        country:{
+            type:String,
+            trim:true
+        },
+        state:{
+            type:String,
+            trim:true
+        },
+        district:{
+            type:String,
+            trim:true
+        },
+        city:{
+            type:String,
+            trim:true
+        },
+        address:{
+            type:String,
         }
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 )
 
