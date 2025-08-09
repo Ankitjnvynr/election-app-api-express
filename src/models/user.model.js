@@ -45,7 +45,6 @@ const userSchema = Schema(
         ],
         password: {
             type: String,
-            required: [true, "Password is required"]
         },
         isVerified: {
             type: Boolean,

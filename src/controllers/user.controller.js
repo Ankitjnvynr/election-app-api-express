@@ -4,6 +4,10 @@ import { asyncHandler } from '../utils/asyncHandlers.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken"
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -20,6 +24,65 @@ const generateAccessAndRefreshToken = async (userId) => {
     }
 }
 
+
+const googleLoginUser = asyncHandler(async (req, res) => {
+    if (!req.body || !req.body.id_token) {
+        throw new ApiError(400, "Google ID token is required");
+    }
+
+    const { id_token } = req.body;
+
+    let ticket;
+    try {
+        ticket = await client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+    } catch (error) {
+        throw new ApiError(401, "Invalid Google token");
+    }
+
+    const payload = ticket.getPayload();
+
+    const { email, name: fullName, picture: avatar } = payload;
+
+    if (!email) {
+        throw new ApiError(400, "Google account email is required");
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        user = await User.create({
+            email,
+            fullName,
+            avatar,
+            username: email.split("@")[0].toLowerCase(), // create a username from email
+            isGoogleAccount: true, // optional flag for future use
+        });
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    };
+
+    const loggedUser = await User.findById(user._id).select("-password -refreshToken");
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(200, {
+                user: loggedUser,
+                accessToken,
+                refreshToken
+            }, "Google login successful")
+        );
+});
 
 
 
@@ -268,5 +331,6 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetails,
-    updateUserAvatar
+    updateUserAvatar,
+    googleLoginUser
 }
