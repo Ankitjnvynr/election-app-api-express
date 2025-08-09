@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { googleLoginUser, loginUser, logoutUser, refreshAccessToken, registerUser } from "../controllers/user.controller.js";
+import { googleLoginUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
@@ -19,6 +19,7 @@ router.route("/login").post(loginUser)
 router.route("/google").post(googleLoginUser)
 
 //secure routes
+router.route("/update-profile").post(verifyJWT,updateAccountDetails)
 router.route("/logout").post(verifyJWT,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 

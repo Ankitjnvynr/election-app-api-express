@@ -20,6 +20,7 @@ const generateAccessAndRefreshToken = async (userId) => {
         return { refreshToken, accessToken }
 
     } catch (error) {
+        console.error("Error generating tokens:", error);
         throw new ApiError(500, "Something went wrong while creating tokens")
     }
 }
@@ -275,25 +276,38 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-    const { fullName, email } = req.body;
-    if (!fullName || !email) {
-        throw new ApiError(400, "Full name and email are required")
+    const { fullName, country, phone, dob, voterId, state, district, city, address } = req.body;
+
+    if (!req.body) {
+        throw new ApiError(400, "data is required to update account details");
     }
+
+    const updatedFields = {
+        ...(fullName && { fullName }),
+        ...(country && { country }),
+        ...(phone && { phone }),
+        ...(dob && { dob }),
+        ...(voterId && { voterId }),
+        ...(state && { state }),
+        ...(district && { district }),
+        ...(city && { city }),
+        ...(address && { address })
+    };
+
     const user = await User.findByIdAndUpdate(
         req.user._id,
-        {
-            $set: {
-                fullName,
-                email: email.toLowerCase()
-            }
-        },
+        { $set: updatedFields },
         { new: true }
     ).select("-password -refreshToken");
 
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
     return res
         .status(200)
-        .json(new ApiResponse(200, user, "Account details updated successfully"))
-})
+        .json(new ApiResponse(200, user, "Account details updated successfully"));
+});
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
     const avatarLocalPath = req.fiile.path

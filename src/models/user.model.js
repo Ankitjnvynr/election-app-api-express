@@ -14,6 +14,7 @@ const userSchema = Schema(
         },
         google_id: {
             type: String,
+            default: null,
         },
         email: {
             type: String,
@@ -43,43 +44,55 @@ const userSchema = Schema(
         },
         password: {
             type: String,
+            default: null,
         },
         isVerified: {
             type: Boolean,
             default: false
         },
         refreshToken: {
-            type: String
+            type: String,
+            default: null,
         },
         phone:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         dob:{
             type:Date,
+            default: null,
+
         },
         voterId:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         country:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         state:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         district:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         city:{
             type:String,
-            trim:true
+            trim:true,
+            default: null,
         },
         address:{
             type:String,
+            trim:true,
+            default: null,
         }
     },
     {
