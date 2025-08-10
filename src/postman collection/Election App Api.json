@@ -1,0 +1,658 @@
+{
+	"info": {
+		"_postman_id": "a5f13728-5cd4-4a76-898e-43843a1f263e",
+		"name": "Election App Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "44812837-a5f13728-5cd4-4a76-898e-43843a1f263e"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Google Login",
+					"id": "9b19b052-f4ed-4418-8050-5e613fc31721",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id_token\" : \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImJhNjNiNDM2ODM2YTkzOWI3OTViNDEyMmQzZjRkMGQyMjVkMWM3MDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDk2NTkyODQxOTA4Mzc5MTY5NjAiLCJlbWFpbCI6ImFua2l0YmthbmFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTc1NDgzOTk0MiwibmFtZSI6IkFua2l0IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xNc3lackxpZmNhSjQta3J6UXNQeXZDREh0VlJ1LTJZUExaN1FiQURhVDhtb0laUT1zOTYtYyIsImdpdmVuX25hbWUiOiJBbmtpdCIsImlhdCI6MTc1NDg0MDI0MiwiZXhwIjoxNzU0ODQzODQyLCJqdGkiOiI5Y2RjNDhlNTQ1YTZiMTNmNGU1YjJlMTBhN2QwY2UzMDdkYzI5YjQzIn0.DfGTCR5u4qZ6iqQJzn_eBZXO1QtXpKabS4EWPiSdzQJyKsy4uZYHG1CATCubdixwVSBppK8jbrTEwM1YWVbqunUux_rsf7Y5PLs5Vr8JsArlQF3EtCc-29V2mW-e5VpSYzP5ReI11std_EAxhhj_lj-IJk5zHrAvSs0g8LSzT_Eyx6OUEKuay7YbCvhI0s_ibQmyzG6zAabci3xIAeipQmJNhbkujSUC94BUARoI2MC_p8ksNRYs_0_-RZpAA5YPGzrn_o0KxjIC2GtWopZm1M6VTThW7Q_LmJnHKdCf7Wn-tsBVf4jV8Y_MM87_HSZKM8UmmbYSxbEkx0ZDpdYMPQ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liveBaseUri}}/users/google",
+							"host": [
+								"{{liveBaseUri}}"
+							],
+							"path": [
+								"users",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email Password Login",
+					"id": "9d5f1620-8461-44a0-9ee4-c7b3a24d3a49",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "325f5b51-6fe4-447b-892c-6b54f7907584"
+		},
+		{
+			"name": "User Activity",
+			"item": [
+				{
+					"name": "Create User Activity",
+					"id": "e6bebd88-e4cb-4a83-b735-1aa9c9cf1630",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"Daily login to app\",\r\n    \"details\": \"Earned for today login\",\r\n    \"points_earned\": 5,\r\n    \"points_spent\": 0\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/activity/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"activity",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Google Login",
+					"id": "9d6f7431-12b2-4e67-968c-b55b3dc58fe2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id_token\" : \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImJhNjNiNDM2ODM2YTkzOWI3OTViNDEyMmQzZjRkMGQyMjVkMWM3MDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDk2NTkyODQxOTA4Mzc5MTY5NjAiLCJlbWFpbCI6ImFua2l0YmthbmFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTc1NDc5ODkxOSwibmFtZSI6IkFua2l0IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xNc3lackxpZmNhSjQta3J6UXNQeXZDREh0VlJ1LTJZUExaN1FiQURhVDhtb0laUT1zOTYtYyIsImdpdmVuX25hbWUiOiJBbmtpdCIsImlhdCI6MTc1NDc5OTIxOSwiZXhwIjoxNzU0ODAyODE5LCJqdGkiOiI2NGE3ZTVkYmVjMTFkMjMzNzFmZjBhODJlZWU5ZGI3YTBjYmQ5NDlhIn0.hKNZwUcu76hWnlGR6o6uzefVMooOoNff4GA1XpeS1Nv_wUCFk-arsogSoB5gzKZ62D1IuaJLdN-1MSEt_NjyERJfZ5GEYJ91zm9XJEcOk8KrGg2hyauGYpWa73ihP12_A9tdBK9ZLYHK3R4ClzDIaKcCzj3WJwQudk7dQnesTiBRwRpco6F_wr7XfzhPmg56tw9GuvOD-Iwap-yMYt2YkM0MKNC6f7SO7xbcehDnsY0fYr-UP5Pbl_qv7HLud4-gab5VfjsMz1twgcTsN1E7DmBct32sJuJ1AfZPOH8EP_omrd4Z2IrS6a3fYOmIn5lAqr2GAQG7ZDU_nKwFPeztIw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/google",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Activity",
+					"id": "fbc994f1-503a-4b63-8b63-0e81f2ace570",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"Daily login to app\",\r\n    \"details\": \"Earned for today login\",\r\n    \"points_earned\": 5,\r\n    \"points_spent\": 0\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/activity/logs?page=1&limit=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"activity",
+								"logs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "34e5e896-c451-4a3f-94e1-2495bdc8ddbf"
+		},
+		{
+			"name": "Arena Questions",
+			"item": [
+				{
+					"name": "Google Login Copy",
+					"id": "b07dc17d-8856-431f-9dad-85674ef4e9b8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id_token\" : \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImJhNjNiNDM2ODM2YTkzOWI3OTViNDEyMmQzZjRkMGQyMjVkMWM3MDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDk2NTkyODQxOTA4Mzc5MTY5NjAiLCJlbWFpbCI6ImFua2l0YmthbmFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTc1NDc5ODkxOSwibmFtZSI6IkFua2l0IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xNc3lackxpZmNhSjQta3J6UXNQeXZDREh0VlJ1LTJZUExaN1FiQURhVDhtb0laUT1zOTYtYyIsImdpdmVuX25hbWUiOiJBbmtpdCIsImlhdCI6MTc1NDc5OTIxOSwiZXhwIjoxNzU0ODAyODE5LCJqdGkiOiI2NGE3ZTVkYmVjMTFkMjMzNzFmZjBhODJlZWU5ZGI3YTBjYmQ5NDlhIn0.hKNZwUcu76hWnlGR6o6uzefVMooOoNff4GA1XpeS1Nv_wUCFk-arsogSoB5gzKZ62D1IuaJLdN-1MSEt_NjyERJfZ5GEYJ91zm9XJEcOk8KrGg2hyauGYpWa73ihP12_A9tdBK9ZLYHK3R4ClzDIaKcCzj3WJwQudk7dQnesTiBRwRpco6F_wr7XfzhPmg56tw9GuvOD-Iwap-yMYt2YkM0MKNC6f7SO7xbcehDnsY0fYr-UP5Pbl_qv7HLud4-gab5VfjsMz1twgcTsN1E7DmBct32sJuJ1AfZPOH8EP_omrd4Z2IrS6a3fYOmIn5lAqr2GAQG7ZDU_nKwFPeztIw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/google",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "question add",
+					"id": "026e80f4-881b-447e-9d42-352d627cad76",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question_text\": \"Who is the current Chief Minister of Bihar as of 2025?\",\r\n  \"options\": [\"Nitish Kumar\", \"Tejashwi Yadav\", \"Sushil Modi\", \"Lalu Prasad Yadav\"],\r\n  \"correct_option_index\": 0\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/questions/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questions",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "questions getting random",
+					"id": "d6253c8a-46f9-4a34-8229-a077223a24cf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question_text\": \"Who is the current Chief Minister of Bihar as of 2025?\",\r\n  \"options\": [\"Nitish Kumar\", \"Tejashwi Yadav\", \"Sushil Modi\", \"Lalu Prasad Yadav\"],\r\n  \"correct_option_index\": 0\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/questions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete the question",
+					"id": "8d8ae452-824d-4b20-b194-952fb8ce107b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question_text\": \"Who is the current Chief Minister of Bihar as of 2025?\",\r\n  \"options\": [\"Nitish Kumar\", \"Tejashwi Yadav\", \"Sushil Modi\", \"Lalu Prasad Yadav\"],\r\n  \"correct_option_index\": 0\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/questions/689811306facaff992e679fd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questions",
+								"689811306facaff992e679fd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update the question",
+					"id": "522c24a2-2638-41b2-823f-ffa6134ca643",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question_text\": \"Who is the current Chief Minister of Bihar as of 2025?\",\r\n  \"options\": [\"Nitish Kumar\", \"Tejashwi Yadav\", \"Sushil Modi\", \"Lalu Prasad Yadav\"],\r\n  \"correct_option_index\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/questions/689811306facaff992e679fd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questions",
+								"689811306facaff992e679fd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit an answer",
+					"id": "f2062745-f982-4513-b010-968b91d3d948",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question_id\": \"6898128c6facaff992e67a06\",\r\n  \"selected_option_index\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/answer/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"answer",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "24c928cd-17a6-48d2-94f1-a3be016d3522"
+		},
+		{
+			"name": "CM Prediction",
+			"item": [
+				{
+					"name": "Google Login Copy",
+					"id": "dce7f8b2-ea06-4e08-9e62-f30869d489c4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id_token\" : \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImJhNjNiNDM2ODM2YTkzOWI3OTViNDEyMmQzZjRkMGQyMjVkMWM3MDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2MzkyNjE2MTE3NTctN2Z1dTN0Ymlva2FlbmFtaml2bTJwaXAwOWxsNzZpZ3QuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDk2NTkyODQxOTA4Mzc5MTY5NjAiLCJlbWFpbCI6ImFua2l0YmthbmFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTc1NDc5ODkxOSwibmFtZSI6IkFua2l0IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xNc3lackxpZmNhSjQta3J6UXNQeXZDREh0VlJ1LTJZUExaN1FiQURhVDhtb0laUT1zOTYtYyIsImdpdmVuX25hbWUiOiJBbmtpdCIsImlhdCI6MTc1NDc5OTIxOSwiZXhwIjoxNzU0ODAyODE5LCJqdGkiOiI2NGE3ZTVkYmVjMTFkMjMzNzFmZjBhODJlZWU5ZGI3YTBjYmQ5NDlhIn0.hKNZwUcu76hWnlGR6o6uzefVMooOoNff4GA1XpeS1Nv_wUCFk-arsogSoB5gzKZ62D1IuaJLdN-1MSEt_NjyERJfZ5GEYJ91zm9XJEcOk8KrGg2hyauGYpWa73ihP12_A9tdBK9ZLYHK3R4ClzDIaKcCzj3WJwQudk7dQnesTiBRwRpco6F_wr7XfzhPmg56tw9GuvOD-Iwap-yMYt2YkM0MKNC6f7SO7xbcehDnsY0fYr-UP5Pbl_qv7HLud4-gab5VfjsMz1twgcTsN1E7DmBct32sJuJ1AfZPOH8EP_omrd4Z2IrS6a3fYOmIn5lAqr2GAQG7ZDU_nKwFPeztIw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/google",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create CM",
+					"id": "b4acc808-fd4f-4539-aac5-08cc00812cee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pushpam Priya Choudhary\",\r\n  \"party\": \"Plurals Party\",\r\n  \"state\": \"Bihar\",\r\n  \"term_start\": null,\r\n  \"term_end\": null,\r\n  \"is_current\": false,\r\n  \"age\": 39,\r\n  \"gender\": \"female\",\r\n  \"image_url\": \"https://example.com/cm-images/pushpam-priya.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CM Predicted by current user",
+					"id": "06668715-62a4-49f8-bd7e-bbc62e610ac3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pushpam Priya Choudhary\",\r\n  \"party\": \"Plurals Party\",\r\n  \"state\": \"Bihar\",\r\n  \"term_start\": null,\r\n  \"term_end\": null,\r\n  \"is_current\": false,\r\n  \"age\": 39,\r\n  \"gender\": \"female\",\r\n  \"image_url\": \"https://example.com/cm-images/pushpam-priya.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CM list for Admin",
+					"id": "a956acef-5bcc-4291-bea2-32cdcff5d9a1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pushpam Priya Choudhary\",\r\n  \"party\": \"Plurals Party\",\r\n  \"state\": \"Bihar\",\r\n  \"term_start\": null,\r\n  \"term_end\": null,\r\n  \"is_current\": false,\r\n  \"age\": 39,\r\n  \"gender\": \"female\",\r\n  \"image_url\": \"https://example.com/cm-images/pushpam-priya.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete CM form list",
+					"id": "03b9f522-90f8-44ac-8f68-7604de937e55",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pushpam Priya Choudhary\",\r\n  \"party\": \"Plurals Party\",\r\n  \"state\": \"Bihar\",\r\n  \"term_start\": null,\r\n  \"term_end\": null,\r\n  \"is_current\": false,\r\n  \"age\": 39,\r\n  \"gender\": \"female\",\r\n  \"image_url\": \"https://example.com/cm-images/pushpam-priya.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/6898772db3d25e234d7afe3e",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"6898772db3d25e234d7afe3e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update CM details",
+					"id": "389545d5-9b16-48be-8059-de8d7400f4b0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pushpam Priya Choudhary\",\r\n  \"party\": \"Plurals Party\",\r\n  \"state\": \"Bihar\",\r\n  \"term_start\": null,\r\n  \"term_end\": null,\r\n  \"is_current\": false,\r\n  \"age\": 35,\r\n  \"gender\": \"female\",\r\n  \"image_url\": \"https://example.com/cm-images/pushpam-priya.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/68987552b3d25e234d7afe37",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"68987552b3d25e234d7afe37"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CM prediction create",
+					"id": "f41f1591-1966-49f7-a440-38122813d7e8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"state\": \"Bihar\",\r\n  \"cm_id\":\"689874d5b3d25e234d7afe25\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/predict",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"predict"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CM prediction update locking status",
+					"id": "72827286-eef9-4836-a21b-46da3b556b3a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"state\": \"Bihar\",\r\n  \"cm_id\":\"68987501b3d25e234d7afe2b\",\r\n  \"is_locked\":false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cm/predict",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cm",
+								"predict"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "0be1bf7b-2227-4042-8469-2db12915a922"
+		}
+	]
+}
