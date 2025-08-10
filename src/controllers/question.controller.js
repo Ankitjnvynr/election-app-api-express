@@ -1,4 +1,5 @@
 import { Question } from "../models/question.model.js";
+import { Answer } from "../models/answer.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandlers.js";
@@ -24,37 +25,78 @@ const createQuestion = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(201, question, "Question created successfully"));
 });
 
-// ✅ Get paginated + randomized questions
+
+
+// ✅ Random + paginated questions with is_answered using $lookup sub-pipeline
 const getPaginatedRandomQuestions = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
   const { page = 1, limit = 10 } = req.query;
 
-  const aggregatePipeline = [
-    { $sample: { size: parseInt(limit) * 5 } }, // Over-sample for pagination randomness
+  const sampleSize = parseInt(limit) * 5;
+
+  const pipeline = [
+    { $sample: { size: sampleSize } }, // Get random questions
+    {
+      $lookup: {
+        from: "answers",
+        let: { questionId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$question_id", "$$questionId"] },
+                  { $eq: ["$user_id", userId] }
+                ]
+              }
+            }
+          },
+          { $limit: 1 }
+        ],
+        as: "user_answer"
+      }
+    },
+    {
+      $addFields: {
+        is_answered: { $gt: [{ $size: "$user_answer" }, 0] },
+        is_correct: {
+          $cond: {
+            if: { $gt: [{ $size: "$user_answer" }, 0] },
+            then: { $arrayElemAt: ["$user_answer.is_correct", 0] },
+            else: null
+          }
+        }
+      }
+    },
     {
       $project: {
         question_text: 1,
         options: 1,
         correct_option_index: 1,
         createdAt: 1,
-      },
-    },
+        is_answered: 1,
+        is_correct: 1
+      }
+    }
   ];
 
-  const options = {
-    page: parseInt(page),
-    limit: parseInt(limit),
-    customLabels: {
-      totalDocs: "totalQuestions",
-      docs: "questions",
-    },
-  };
 
-  const result = await Question.aggregatePaginate(Question.aggregate(aggregatePipeline), options);
+  const results = await Question.aggregate(pipeline);
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, result, "Questions fetched randomly with pagination"));
+  // Manual pagination
+  const start = (page - 1) * limit;
+  const end = start + parseInt(limit);
+  const paginatedQuestions = results.slice(start, end);
+
+  return res.status(200).json(
+    new ApiResponse(200, {
+      totalQuestions: results.length,
+      currentPage: parseInt(page),
+      questions: paginatedQuestions
+    }, "Random questions fetched with is_answered flag")
+  );
 });
+
 
 // ✅ Get a single question by ID
 const getQuestionById = asyncHandler(async (req, res) => {

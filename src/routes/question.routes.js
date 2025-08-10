@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createQuestion, deleteQuestion, getPaginatedRandomQuestions, updateQuestion } from "../controllers/question.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { createQuestion, deleteQuestion, getPaginatedRandomQuestions, updateQuestion } from "../controllers/question.controller.js";
 
 const router = Router();
 
