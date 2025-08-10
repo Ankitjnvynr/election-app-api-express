@@ -20,6 +20,7 @@ import videoPostRouter from "./routes/videoPost.routes.js"
 import questionRouter from "./routes/question.routes.js"
 import answerRouter from "./routes/answer.routes.js"
 import activityRouter from "./routes/activity.routes.js"
+import cmRouter from "./routes/cm.routes.js"
 
 //declare routes
 app.use("/api/v1/users",userRouter)
@@ -28,5 +29,6 @@ app.use("/api/v1/users",userRouter)
 app.use("/api/v1/questions",questionRouter)
 app.use("/api/v1/answer",answerRouter)
 app.use("/api/v1/activity",activityRouter)
+app.use("/api/v1/cm",cmRouter)
 
 export {cors,app}
