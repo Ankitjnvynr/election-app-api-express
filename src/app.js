@@ -31,4 +31,9 @@ app.use("/api/v1/answer",answerRouter)
 app.use("/api/v1/activity",activityRouter)
 app.use("/api/v1/cm",cmRouter)
 
+// testing route
+app.get("/",(req,res)=>{
+    res.send("Welcome to the API")
+})
+
 export {cors,app}
