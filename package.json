@@ -1,7 +1,7 @@
 {
   "name": "election-app-api",
   "version": "1.0.0",
-  "description": "the api for userlogin signup and booking system",
+  "description": "the api for userlogin signup and ",
   "type": "module",
   "main": "index.js",
   "scripts": {
