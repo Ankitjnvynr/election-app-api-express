@@ -98,6 +98,51 @@ const getPaginatedRandomQuestions = asyncHandler(async (req, res) => {
 });
 
 
+//  paginated questions with is_answered using $lookup sub-pipeline
+const getPaginatedQuestions = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10, search = "" } = req.query;
+
+  // Optional search filter
+  const matchStage = {};
+  if (search) {
+    matchStage.question_text = { $regex: search, $options: "i" };
+  }
+
+  const aggregatePipeline = [
+    { $match: matchStage },
+    { $sort: { createdAt: -1 } },
+    {
+      $project: {
+        question_text: 1,
+        options: 1,
+        correct_option_index: 1,
+        createdAt: 1
+      }
+    }
+  ];
+
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit)
+  };
+
+  const result = await Question.aggregatePaginate(
+    Question.aggregate(aggregatePipeline),
+    options
+  );
+
+  return res.status(200).json(
+    new ApiResponse(200, {
+      totalQuestions: result.totalDocs,
+      totalPages: result.totalPages,
+      currentPage: result.page,
+      questions: result.docs
+    }, "Paginated questions fetched for admin")
+  );
+});
+
+
+
 // ✅ Get a single question by ID
 const getQuestionById = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -151,4 +196,5 @@ export {
   getQuestionById,
   updateQuestion,
   deleteQuestion,
+  getPaginatedQuestions
 };
