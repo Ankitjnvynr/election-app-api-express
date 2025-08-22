@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -336,7 +337,47 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 })
 
 
+// attach plugin (once)
+User.schema.plugin(mongoosePaginate);
 
+const getAllUsers = asyncHandler(async (req, res) => {
+    const { page = 1, limit = 10, role, email, username, isVerified } = req.query;
+
+    // build filter object
+    const filters = {};
+    if (role) filters.role = role;
+    if (email) filters.email = { $regex: email, $options: "i" };
+    if (username) filters.username = { $regex: username, $options: "i" };
+    if (typeof isVerified !== "undefined") filters.isVerified = isVerified === "true";
+
+    const options = {
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        sort: { createdAt: -1 },
+        select: "-password -refreshToken", // hide sensitive fields
+    };
+
+    const result = await User.paginate(filters, options);
+
+    if (!result.docs.length) {
+        throw new ApiError(404, "No users found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                users: result.docs,
+                totalDocs: result.totalDocs,
+                totalPages: result.totalPages,
+                currentPage: result.page,
+                hasNextPage: result.hasNextPage,
+                hasPrevPage: result.hasPrevPage
+            },
+            "Users fetched successfully"
+        )
+    );
+});
 
 
 export {
@@ -348,5 +389,6 @@ export {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
-    googleLoginUser
+    googleLoginUser,
+    getAllUsers,
 }
