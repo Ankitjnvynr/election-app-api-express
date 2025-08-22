@@ -22,7 +22,7 @@ router.route("/update-password").post(verifyJWT,changeCurrentPassword)
 //secure routes
 router.route("/update-profile").post(verifyJWT,updateAccountDetails)
 router.route("/logout").post(verifyJWT,logoutUser)
-router.route("/all").post(verifyJWT,getAllUsers)
+router.route("/all").get(verifyJWT,getAllUsers)
 router.route("/refresh-token").post(refreshAccessToken)
 
 export default router
