@@ -14,11 +14,11 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const generateAccessAndRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId)
-        const newAccessToken = user.generateAccessToken()
+        const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
         user.refreshToken = refreshToken
         await user.save({ validBeforeSave: false })
-        return { refreshToken, newAccessToken }
+        return { refreshToken, accessToken }
 
     } catch (error) {
         console.error("Error generating tokens:", error);
@@ -231,18 +231,18 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             secure: true
         }
 
-        const { refreshToken, newAccessToken } = await generateAccessAndRefreshToken(user._id)
+        const { refreshToken, accessToken } = await generateAccessAndRefreshToken(user._id)
 
         return res
             .status(200)
             .cookie("refreshToken", refreshToken, options)
-            .cookie("accessToken", newAccessToken, options)
+            .cookie("accessToken", accessToken, options)
             .json(
                 new ApiResponse(
                     200,
                     {
                         refreshToken,
-                        accessToken: newAccessToken,
+                        accessToken
                     },
                     "access token refreshed"
                 )
