@@ -52,14 +52,14 @@ const getCMListWithPredictionStatus = asyncHandler(async (req, res) => {
     {
       $lookup: {
         from: "cmpredictions",
-        let: { cmState: "$state" },
+        let: { cmId: "$_id" },
         pipeline: [
           {
             $match: {
               $expr: {
                 $and: [
                   { $eq: ["$user_id", userId] },
-                  { $eq: ["$state", "$$cmState"] }
+                  { $eq: ["$predicted_cm", "$$cmId"] }
                 ]
               }
             }
@@ -78,20 +78,6 @@ const getCMListWithPredictionStatus = asyncHandler(async (req, res) => {
             { $arrayElemAt: ["$user_prediction.is_locked", 0] },
             false
           ]
-        },
-        predicted_name: {
-          $cond: [
-            { $gt: [{ $size: "$user_prediction" }, 0] },
-            { $arrayElemAt: ["$user_prediction.predicted_name", 0] },
-            null
-          ]
-        },
-        predicted_party: {
-          $cond: [
-            { $gt: [{ $size: "$user_prediction" }, 0] },
-            { $arrayElemAt: ["$user_prediction.predicted_party", 0] },
-            null
-          ]
         }
       }
     },
@@ -104,6 +90,7 @@ const getCMListWithPredictionStatus = asyncHandler(async (req, res) => {
 
   return res.status(200).json(new ApiResponse(200, cmList, "CM list fetched successfully"));
 });
+
 
 // ✅ Create or Update Prediction
 const createOrUpdatePrediction = asyncHandler(async (req, res) => {
