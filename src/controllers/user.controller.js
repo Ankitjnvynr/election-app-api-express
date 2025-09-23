@@ -6,6 +6,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library";
 import mongoosePaginate from "mongoose-paginate-v2";
+import { ActivityLog } from '../models/activityLog.model.js';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -60,8 +61,30 @@ const googleLoginUser = asyncHandler(async (req, res) => {
             fullName,
             avatar,
             username: email.split("@")[0].toLowerCase(), // create a username from email
-            isGoogleAccount: true, // optional flag for future use
+            isGoogleAccount: true, // optional flag for future use,
+            points:250,
+            isVerified:true
         });
+
+        if(user){
+                // ✅ Proceed: Create the activity log
+                const points_earned = 250;
+                const points_spent = 0;
+                const log = await ActivityLog.create({
+                    user_id: user?._id,
+                    action:"Welcome Bonus",
+                    details:"Signup bonus for new user",
+                    points_earned,
+                    points_spent,
+                });
+            
+                // 💡 Update the user points (atomic update from DB state)
+                await User.findByIdAndUpdate(user?._id, {
+                    $inc: {
+                        points: points_earned - points_spent,
+                    },
+                });
+        }
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
