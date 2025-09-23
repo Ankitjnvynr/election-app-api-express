@@ -1,1 +1,1 @@
-export const DB_NAME = "election_khelo_app"
+export const DB_NAME = "election_khelo"
