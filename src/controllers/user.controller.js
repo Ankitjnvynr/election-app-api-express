@@ -62,7 +62,7 @@ const googleLoginUser = asyncHandler(async (req, res) => {
             avatar,
             username: email.split("@")[0].toLowerCase(), // create a username from email
             isGoogleAccount: true, // optional flag for future use,
-            points:250,
+            points:0,
             isVerified:true
         });
 
