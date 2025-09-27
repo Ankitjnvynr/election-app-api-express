@@ -7,6 +7,9 @@ import jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library";
 import mongoosePaginate from "mongoose-paginate-v2";
 import { ActivityLog } from '../models/activityLog.model.js';
+import { Answer } from '../models/answer.model.js';
+import { ConsetuencyPrediction } from '../models/consetuencyPrediction.model.js';
+import { CMPrediction } from '../models/cmPrediction.model.js';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -364,42 +367,89 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 User.schema.plugin(mongoosePaginate);
 
 const getAllUsers = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, role, email, username, isVerified } = req.query;
+  const { page = 1, limit = 10, role, email, username, isVerified } = req.query;
 
-    // build filter object
-    const filters = {};
-    if (role) filters.role = role;
-    if (email) filters.email = { $regex: email, $options: "i" };
-    if (username) filters.username = { $regex: username, $options: "i" };
-    if (typeof isVerified !== "undefined") filters.isVerified = isVerified === "true";
+  // build filter object
+  const filters = {};
+  if (role) filters.role = role;
+  if (email) filters.email = { $regex: email, $options: "i" };
+  if (username) filters.username = { $regex: username, $options: "i" };
+  if (typeof isVerified !== "undefined") filters.isVerified = isVerified === "true";
 
-    const options = {
-        page: parseInt(page, 10),
-        limit: parseInt(limit, 10),
-        sort: { createdAt: -1 },
-        select: "-password -refreshToken", // hide sensitive fields
+  const options = {
+    page: parseInt(page, 10),
+    limit: parseInt(limit, 10),
+    sort: { createdAt: -1 },
+    select: "-password -refreshToken", // hide sensitive fields
+  };
+
+  // Paginated users
+  const result = await User.paginate(filters, options);
+
+  if (!result.docs.length) {
+    throw new ApiError(404, "No users found");
+  }
+
+  // Aggregate stats for each user
+  const userIds = result.docs.map((u) => u._id);
+
+  // Fetch counts in parallel
+  const [activities, correctAnswers, constituencyPreds, cmPreds] = await Promise.all([
+    ActivityLog.aggregate([
+      { $match: { user_id: { $in: userIds } } },
+      { $group: { _id: "$user_id", count: { $sum: 1 } } },
+    ]),
+    Answer.aggregate([
+      { $match: { user_id: { $in: userIds }, is_correct: true } },
+      { $group: { _id: "$user_id", count: { $sum: 1 } } },
+    ]),
+    ConsetuencyPrediction.aggregate([
+      { $match: { user_id: { $in: userIds } } },
+      { $group: { _id: "$user_id", count: { $sum: 1 } } },
+    ]),
+    CMPrediction.aggregate([
+      { $match: { user_id: { $in: userIds } } },
+      { $group: { _id: "$user_id", count: { $sum: 1 } } },
+    ]),
+  ]);
+
+  // Convert arrays to maps for quick lookup
+  const mapCounts = (arr) =>
+    arr.reduce((acc, cur) => {
+      acc[cur._id.toString()] = cur.count;
+      return acc;
+    }, {});
+
+  const activityMap = mapCounts(activities);
+  const correctAnsMap = mapCounts(correctAnswers);
+  const constPredMap = mapCounts(constituencyPreds);
+  const cmPredMap = mapCounts(cmPreds);
+
+  // Attach stats to each user
+  const usersWithStats = result.docs.map((u) => {
+    const id = u._id.toString();
+    return {
+      ...u.toObject(),
+      totalActivities: activityMap[id] || 0,
+      totalCorrectAnswers: correctAnsMap[id] || 0,
+      totalPredictions: (constPredMap[id] || 0) + (cmPredMap[id] || 0),
     };
+  });
 
-    const result = await User.paginate(filters, options);
-
-    if (!result.docs.length) {
-        throw new ApiError(404, "No users found");
-    }
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                users: result.docs,
-                totalDocs: result.totalDocs,
-                totalPages: result.totalPages,
-                currentPage: result.page,
-                hasNextPage: result.hasNextPage,
-                hasPrevPage: result.hasPrevPage
-            },
-            "Users fetched successfully"
-        )
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        users: usersWithStats,
+        totalDocs: result.totalDocs,
+        totalPages: result.totalPages,
+        currentPage: result.page,
+        hasNextPage: result.hasNextPage,
+        hasPrevPage: result.hasPrevPage,
+      },
+      "Users fetched successfully"
+    )
+  );
 });
 
 
